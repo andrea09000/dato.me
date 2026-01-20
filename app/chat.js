@@ -90,26 +90,28 @@ function setupPresence() {
   });
 }
 
-function loadUserProfile() {
-  const profile = getStoredProfile();
+async function loadUserProfile() {
+  if (!currentUser) return;
+  
+  try {
+    // Carica profilo da Firestore
+    const userDoc = await db.collection('users').doc(currentUser.uid).get();
+    if (!userDoc.exists) return;
+    
+    const profile = userDoc.data();
 
-  // Aggiorna il pulsante profilo con avatar se presente
-  if (profile.photo) {
-    const profileBtn = document.getElementById('profileButton');
-    if (profileBtn) {
-      profileBtn.style.backgroundImage = `url(${profile.photo})`;
-      profileBtn.style.backgroundSize = 'cover';
-      profileBtn.style.backgroundPosition = 'center';
-      profileBtn.textContent = '';
+    // Aggiorna il pulsante profilo con avatar se presente
+    if (profile.photoURL) {
+      const profileBtn = document.getElementById('profileButton');
+      if (profileBtn) {
+        profileBtn.style.backgroundImage = `url(${profile.photoURL})`;
+        profileBtn.style.backgroundSize = 'cover';
+        profileBtn.style.backgroundPosition = 'center';
+        profileBtn.textContent = '';
+      }
     }
-  }
-
-  // Aggiorna status online
-  const onlineStatus = document.getElementById('onlineStatus');
-  if (onlineStatus && profile.showOnline !== false) {
-    onlineStatus.textContent = '12 online';
-  } else if (onlineStatus) {
-    onlineStatus.textContent = 'invisibile';
+  } catch (error) {
+    console.error('Errore caricamento profilo:', error);
   }
 }
 
@@ -214,13 +216,11 @@ async function startNewChat() {
   }
 }
 
-function refreshChats() {
+async function refreshChats() {
   // Aggiorna la lista chat
   showToast("Aggiornamento chat...");
-  // Simula refresh
-  setTimeout(() => {
-    showToast("Chat aggiornate!");
-  }, 1000);
+  await loadChatList();
+  showToast("Chat aggiornate!");
 }
 
 function addNewChatToList(chatId, name) {
@@ -257,20 +257,40 @@ async function loadChatList() {
   if (!chatList) return;
 
   try {
-    // Carica le conversazioni dell'utente da Firebase (non ancora scadute)
-    const now = new Date();
+    // Carica le conversazioni dell'utente da Firebase
+    // Query semplificata: solo per partecipanti, poi ordina in memoria
     const conversationsRef = db.collection('conversations')
       .where('participants', 'array-contains', currentUser.uid)
-      .where('expiresAt', '>', firebase.firestore.Timestamp.fromDate(now))
-      .orderBy('expiresAt', 'desc')
-      .orderBy('lastMessage.timestamp', 'desc')
-      .limit(20);
+      .limit(50);
 
     const snapshot = await conversationsRef.get();
+    
+    // Filtra e ordina le conversazioni in memoria
+    const now = new Date();
+    const conversations = [];
+    
+    snapshot.forEach(doc => {
+      const conv = doc.data();
+      // Filtra solo quelle non scadute (se hanno expiresAt)
+      const expiresAt = conv.expiresAt?.toDate();
+      if (!expiresAt || expiresAt > now) {
+        conversations.push({ id: doc.id, ...conv });
+      }
+    });
+    
+    // Ordina per ultimo messaggio (più recente prima)
+    conversations.sort((a, b) => {
+      const aTime = a.lastMessage?.timestamp?.toDate() || a.createdAt?.toDate() || new Date(0);
+      const bTime = b.lastMessage?.timestamp?.toDate() || b.createdAt?.toDate() || new Date(0);
+      return bTime - aTime;
+    });
+    
+    // Limita a 20 conversazioni
+    const limitedConversations = conversations.slice(0, 20);
 
     chatList.innerHTML = ''; // Pulisce la lista
 
-    if (snapshot.empty) {
+    if (limitedConversations.length === 0) {
       // Nessuna conversazione attiva, mostra messaggio vuoto
       chatList.innerHTML = `
         <div class="empty-state">
@@ -282,9 +302,8 @@ async function loadChatList() {
     }
 
     // Crea elementi chat per ogni conversazione
-    snapshot.forEach(doc => {
-      const conversation = doc.data();
-      const chatItem = createChatItem(doc.id, conversation);
+    limitedConversations.forEach(({ id, ...conversation }) => {
+      const chatItem = createChatItem(id, conversation);
       chatList.appendChild(chatItem);
     });
 
@@ -308,7 +327,7 @@ function createChatItem(conversationId, conversation) {
 
   // Genera avatar casuale se non presente
   const avatar = otherParticipant.avatar || String.fromCharCode(65 + Math.floor(Math.random() * 26));
-  const displayName = otherParticipant.displayName || generateRandomName();
+  const displayName = otherParticipant.displayName || otherParticipant.username || 'Anonimo';
 
   // Calcola messaggi non letti
   const unreadCount = conversation.unreadCounts?.[currentUser.uid] || 0;

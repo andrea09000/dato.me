@@ -43,45 +43,78 @@
     // Supporta sia ?u=username che #username che pathname diretto
     
     function redirectToTempChat(username) {
+      console.log('🔗 Reindirizzamento a temp-chat con username:', username);
+      
       if (!username || username.trim() === '') {
         // Username non valido, reindirizza alla home
+        console.log('⚠️ Username non valido, reindirizzo alla home');
         window.location.href = '/';
         return;
       }
       
       // Reindirizza immediatamente alla chat temporanea
-      window.location.replace(`./temp-chat.html?user=${encodeURIComponent(username.trim())}`);
+      const redirectUrl = `./temp-chat.html?user=${encodeURIComponent(username.trim())}`;
+      console.log('✅ Reindirizzamento a:', redirectUrl);
+      window.location.replace(redirectUrl);
     }
     
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 user.html caricato');
+      console.log('📍 Pathname:', window.location.pathname);
+      console.log('🔍 Search:', window.location.search);
+      console.log('# Hash:', window.location.hash);
+      
       let username = null;
       
       // Metodo 1: Parametro URL ?u=username (Vercel rewrite)
       const urlParams = new URLSearchParams(window.location.search);
       username = urlParams.get('u');
+      console.log('📋 Parametro u=', username);
       
       // Metodo 2: Hash #username
       if (!username && window.location.hash) {
         username = window.location.hash.substring(1); // Rimuove il #
+        console.log('🔗 Hash username:', username);
       }
       
       // Metodo 3: Pathname diretto (per routing diretto)
-      // Es: /username -> username
+      // Es: /username -> username oppure /app/user.html?u=username
       if (!username) {
         const pathParts = window.location.pathname.split('/').filter(p => p);
+        console.log('📂 Path parts:', pathParts);
         
         // Rimuovi parti note della path
         const filteredPath = pathParts.filter(p => 
           p !== 'app' && 
           p !== 'user' && 
           p !== 'user.html' &&
-          !p.includes('.html')
+          !p.includes('.html') &&
+          p !== 'favicon.ico' &&
+          p !== 'robots.txt'
         );
+        
+        console.log('🔍 Filtered path:', filteredPath);
         
         // L'ultimo segmento rimanente dovrebbe essere lo username
         if (filteredPath.length > 0) {
           username = filteredPath[filteredPath.length - 1];
+          console.log('✅ Username estratto dal pathname:', username);
         }
+      }
+      
+      if (!username) {
+        console.error('❌ Nessun username trovato!');
+        // Mostra messaggio di errore all'utente
+        document.querySelector('.loading-content').innerHTML = `
+          <div style="color: var(--text);">
+            <p style="color: #ff6b6b; margin-bottom: 16px;">❌ Link non valido</p>
+            <p style="font-size: 14px; color: var(--muted);">Il link del profilo non è corretto.</p>
+            <button onclick="window.location.href='/'" style="margin-top: 20px; padding: 12px 24px; background: var(--accent); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+              Vai alla Home
+            </button>
+          </div>
+        `;
+        return;
       }
       
       // Reindirizza

@@ -185,20 +185,34 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Funzione per verificare se username esiste già
+// Funzione per verificare se username esiste già (OTTIMIZZATA)
 async function checkUsernameExists(username) {
   try {
     // Ottieni username corrente dell'utente
     const currentUserDoc = await db.collection('users').doc(currentUser.uid).get();
     const currentUsername = currentUserDoc.data()?.username;
 
-    // Se è lo stesso username, è ok
-    if (username === currentUsername) return false;
+    // Se è lo stesso username (case-insensitive), è ok
+    if (username.toLowerCase() === currentUsername?.toLowerCase()) return false;
 
-    // Cerca se esiste già
-    const snapshot = await db.collection('users').where('username', '==', username).get();
+    // Query ottimizzata con timeout
+    const normalizedUsername = username.toLowerCase();
+    const queryPromise = db.collection('users')
+      .where('username_lowercase', '==', normalizedUsername)
+      .limit(1)
+      .get();
+    
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Query timeout')), 5000)
+    );
+    
+    const snapshot = await Promise.race([queryPromise, timeoutPromise]);
     return !snapshot.empty;
   } catch (error) {
+    if (error.message === 'Query timeout') {
+      console.warn('⚠️ Timeout verifica username');
+      return false;
+    }
     console.error('Errore verifica username:', error);
     return false;
   }

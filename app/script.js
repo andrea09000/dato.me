@@ -60,7 +60,7 @@ if (usernameInput && usernameHint) {
       return;
     }
     
-    // Controlla disponibilità dopo 500ms di inattività
+    // Controlla disponibilità dopo 800ms di inattività (debounce)
     usernameHint.style.display = 'block';
     usernameHint.textContent = 'Verifica disponibilità...';
     usernameHint.style.color = '#999';
@@ -68,17 +68,22 @@ if (usernameInput && usernameHint) {
     usernameCheckTimeout = setTimeout(async () => {
       try {
         const exists = await checkUsernameExists(username);
-        if (exists) {
-          usernameHint.textContent = '❌ Username non disponibile';
-          usernameHint.style.color = '#ff6b6b';
-        } else {
-          usernameHint.textContent = '✅ Username disponibile';
-          usernameHint.style.color = '#4ecdc4';
+        // Verifica che l'username non sia cambiato durante la verifica
+        if (usernameInput.value.trim() === username) {
+          if (exists) {
+            usernameHint.textContent = '❌ Username non disponibile';
+            usernameHint.style.color = '#ff6b6b';
+          } else {
+            usernameHint.textContent = '✅ Username disponibile';
+            usernameHint.style.color = '#4ecdc4';
+          }
         }
       } catch (error) {
-        usernameHint.style.display = 'none';
+        if (usernameInput.value.trim() === username) {
+          usernameHint.style.display = 'none';
+        }
       }
-    }, 500);
+    }, 800);
   });
 }
 
@@ -456,7 +461,11 @@ forms.forEach((form) => {
   });
 });
 
-// Funzione per verificare se username esiste già
+// Cache per evitare query duplicate
+const usernameCheckCache = new Map();
+const CACHE_DURATION = 30000; // 30 secondi
+
+// Funzione per verificare se username esiste già (OTTIMIZZATA)
 async function checkUsernameExists(username) {
   try {
     if (!username || username.trim() === '') {
@@ -466,41 +475,60 @@ async function checkUsernameExists(username) {
     const trimmedUsername = username.trim();
     const normalizedUsername = trimmedUsername.toLowerCase();
     
-    console.log('🔍 Verifica username:', trimmedUsername, '->', normalizedUsername);
+    // Controlla cache
+    const cacheKey = normalizedUsername;
+    const cached = usernameCheckCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return cached.exists;
+    }
     
-    // Prima prova con username originale (più comune)
-    let snapshot = await db.collection('users')
-      .where('username', '==', trimmedUsername)
+    // Query ottimizzata: usa solo username_lowercase (case-insensitive, più efficiente)
+    // Usa Promise.race con timeout per evitare attese infinite
+    const queryPromise = db.collection('users')
+      .where('username_lowercase', '==', normalizedUsername)
       .limit(1)
       .get();
     
-    console.log('Query username originale:', snapshot.size, 'risultati');
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Query timeout')), 5000)
+    );
     
-    // Se non trova nulla, prova anche con username_lowercase (per nuovi documenti)
-    if (snapshot.empty) {
-      snapshot = await db.collection('users')
-        .where('username_lowercase', '==', normalizedUsername)
-        .limit(1)
-        .get();
-      console.log('Query username_lowercase:', snapshot.size, 'risultati');
-    }
+    const snapshot = await Promise.race([queryPromise, timeoutPromise]);
     
     const exists = !snapshot.empty;
-    console.log('✅ Username', trimmedUsername, exists ? 'ESISTE' : 'DISPONIBILE');
+    
+    // Salva in cache
+    usernameCheckCache.set(cacheKey, {
+      exists,
+      timestamp: Date.now()
+    });
+    
+    // Pulisci cache vecchia (più di 1 minuto)
+    if (usernameCheckCache.size > 50) {
+      const now = Date.now();
+      for (const [key, value] of usernameCheckCache.entries()) {
+        if (now - value.timestamp > 60000) {
+          usernameCheckCache.delete(key);
+        }
+      }
+    }
     
     return exists;
     
   } catch (error) {
-    console.error('❌ Errore verifica username:', error);
-    console.error('Dettagli errore:', error.code, error.message);
-    
-    // Se è un errore di permessi, NON bloccare - lascia che Firebase gestisca
-    if (error.code === 'permission-denied') {
-      console.warn('⚠️ Permessi Firestore - query non permessa, permettendo tentativo');
-      return false; // Permette di provare, Firebase rifiuterà se duplicato
+    // Se è timeout o errore di rete, ritorna false (ottimistico)
+    if (error.message === 'Query timeout' || error.code === 'unavailable') {
+      console.warn('⚠️ Timeout verifica username, assumendo disponibile');
+      return false;
     }
     
-    // Per altri errori (rete, etc), permette di provare
+    // Se è un errore di permessi, NON bloccare
+    if (error.code === 'permission-denied') {
+      console.warn('⚠️ Permessi Firestore - query non permessa, permettendo tentativo');
+      return false;
+    }
+    
+    console.error('❌ Errore verifica username:', error);
     return false; // false = username disponibile (ottimistico)
   }
 }

@@ -9,6 +9,14 @@
       "destination": "/sito/:path*"
     },
     {
+      "source": "/favicon.ico",
+      "destination": "/favicon.ico"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
       "source": "/([a-zA-Z0-9_-]+)",
       "destination": "/app/user.html?u=$1"
     },
