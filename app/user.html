@@ -45,12 +45,12 @@
     function redirectToTempChat(username) {
       if (!username || username.trim() === '') {
         // Username non valido, reindirizza alla home
-        window.location.href = './index.html';
+        window.location.href = '/';
         return;
       }
       
-      // Reindirizza alla chat temporanea
-      window.location.href = `./temp-chat.html?user=${encodeURIComponent(username.trim())}`;
+      // Reindirizza immediatamente alla chat temporanea
+      window.location.replace(`./temp-chat.html?user=${encodeURIComponent(username.trim())}`);
     }
     
     document.addEventListener('DOMContentLoaded', function() {

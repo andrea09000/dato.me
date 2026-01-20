@@ -9,8 +9,8 @@
       "destination": "/sito/:path*"
     },
     {
-      "source": "/:username([a-zA-Z0-9_-]+)",
-      "destination": "/app/temp-chat.html?user=:username"
+      "source": "/([a-zA-Z0-9_-]+)",
+      "destination": "/app/user.html?u=$1"
     },
     {
       "source": "/",
