@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termini e Condizioni | dmto.me</title>
+  <meta name="description" content="Termini e condizioni di utilizzo di dmto.me">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="glow glow--1"></div>
+  <div class="glow glow--2"></div>
+  <div class="glow glow--3"></div>
+
+  <main class="shell">
+    <nav class="top-nav">
+      <button class="btn-back" onclick="window.location.href='./index.html'">←</button>
+      <div class="brand">
+        <span class="dot"></span>
+        <div class="brand__text">
+          <span class="word">dmto.me</span>
+          <small>termini</small>
+        </div>
+      </div>
+      <div class="nav-spacer"></div>
+    </nav>
+
+    <section class="card legal-content">
+      <div class="legal-header">
+        <h1>Termini e Condizioni</h1>
+        <p class="legal-meta">Ultimo aggiornamento: <span id="lastUpdated"></span></p>
+      </div>
+
+      <div class="legal-body">
+
+        <section class="legal-section">
+          <h2>1. Accettazione dei Termini</h2>
+          <p>Accedendo e utilizzando dmto.me ("l'App"), accetti di essere vincolato da questi Termini e Condizioni ("Termini"). Se non accetti questi Termini, non utilizzare l'App.</p>
+          <p>Questi Termini costituiscono l'intero accordo tra te e dmto.me riguardo all'uso dell'App.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>2. Descrizione del Servizio</h2>
+          <p>dmto.me è una piattaforma di chat anonima che permette conversazioni temporanee senza registrazione obbligatoria.</p>
+          <ul>
+            <li><strong>Chat temporanee:</strong> Conversazioni senza identità rivelata</li>
+            <li><strong>Auto-distruzione:</strong> Tutte le chat si eliminano dopo 24 ore</li>
+            <li><strong>Anonimato:</strong> Nessuna raccolta di dati personali</li>
+            <li><strong>Zero moderazione:</strong> Nessun controllo sui contenuti</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>3. Uso Accettabile</h2>
+          <p>Ti impegni a utilizzare l'App in modo responsabile e legale:</p>
+
+          <h3>✅ Consentito:</h3>
+          <ul>
+            <li>Conversazioni rispettose e adulte</li>
+            <li>Discussioni su qualsiasi argomento</li>
+            <li>Uso anonimo senza rivelare identità</li>
+            <li>Condivisione di pensieri personali</li>
+          </ul>
+
+          <h3>❌ Non Consentito:</h3>
+          <ul>
+            <li>Contenuti illegali o dannosi</li>
+            <li>Spam o messaggi ripetitivi</li>
+            <li>Violenza, minaccia o intimidazione</li>
+            <li>Contenuti discriminatori o d'odio</li>
+            <li>Minori di 18 anni</li>
+            <li>Uso commerciale non autorizzato</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>4. Anonimato e Responsabilità</h2>
+          <p><strong>Importante:</strong> dmto.me garantisce anonimato completo, ma questo comporta responsabilità personali.</p>
+
+          <h3>La nostra posizione:</h3>
+          <ul>
+            <li><strong>Zero responsabilità:</strong> Non monitoriamo né moderiamo i contenuti</li>
+            <li><strong>Auto-distruzione:</strong> I contenuti scompaiono automaticamente</li>
+            <li><strong>Anonimato garantito:</strong> Non riveliamo identità degli utenti</li>
+            <li><strong>Nessuna moderazione:</strong> Non interveniamo nelle conversazioni</li>
+          </ul>
+
+          <h3>La tua responsabilità:</h3>
+          <ul>
+            <li><strong>Uso personale:</strong> L'App è solo per uso personale adulto</li>
+            <li><strong>Contenuti propri:</strong> Sei responsabile di ciò che invii</li>
+            <li><strong>Rispetto legge:</strong> Non violare leggi locali o internazionali</li>
+            <li><strong>Giudizio proprio:</strong> Valuta tu l'affidabilità dei contatti</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>5. Limitazione di Responsabilità</h2>
+          <p><strong>Utilizzi l'App a tuo rischio.</strong></p>
+
+          <ul>
+            <li><strong>Nessuna garanzia:</strong> L'App è fornita "così com'è"</li>
+            <li><strong>Zero responsabilità:</strong> Non siamo responsabili per:
+              <ul>
+                <li>Contenuti pubblicati da altri utenti</li>
+                <li>Interazioni con altri utenti</li>
+                <li>Danni emotivi o psicologici</li>
+                <li>Perdita di dati (tutto si auto-elimina)</li>
+                <li>Interruzioni del servizio</li>
+              </ul>
+            </li>
+            <li><strong>Esclusione danni:</strong> Escludiamo qualsiasi responsabilità per danni diretti, indiretti, incidentali o consequenziali</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>6. Privacy e Dati</h2>
+          <p>La nostra Privacy Policy è parte integrante di questi Termini. Leggi la <a href="./privacy-policy.html">Privacy Policy</a> per dettagli completi.</p>
+
+          <ul>
+            <li><strong>Anonimato completo:</strong> Non raccogliamo dati personali</li>
+            <li><strong>Auto-distruzione:</strong> Tutto si elimina dopo 24 ore</li>
+            <li><strong>Nessuna conservazione:</strong> Zero archiviazione permanente</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>7. Interruzione del Servizio</h2>
+          <p>Ci riserviamo il diritto di:</p>
+          <ul>
+            <li><strong>Sospendere l'App:</strong> In qualsiasi momento senza preavviso</li>
+            <li><strong>Modificare funzionalità:</strong> Cambiare o rimuovere features</li>
+            <li><strong>Terminare account:</strong> Se violi questi Termini</li>
+            <li><strong>Eliminare contenuti:</strong> Anche se auto-distruttivi</li>
+          </ul>
+          <p>Non garantiamo continuità del servizio.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>8. Proprietà Intellettuale</h2>
+          <ul>
+            <li><strong>App nostra:</strong> dmto.me e il suo codice sono di nostra proprietà</li>
+            <li><strong>Contenuti tuoi:</strong> Rimani proprietario dei tuoi messaggi</li>
+            <li><strong>Licenza d'uso:</strong> Ti concediamo licenza limitata per usare l'App</li>
+            <li><strong>Nessuna rivendicazione:</strong> Non rivendichiamo diritti sui tuoi contenuti</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>9. Modifiche ai Termini</h2>
+          <p>Possiamo modificare questi Termini in qualsiasi momento. Le modifiche saranno:</p>
+          <ul>
+            <li><strong>Notificate:</strong> Attraverso l'App o questa pagina</li>
+            <li><strong>Effective:</strong> Dalla data di pubblicazione</li>
+            <li><strong>Accettazione:</strong> Continuando ad usare l'App accetti le modifiche</li>
+          </ul>
+          <p>Controlla regolarmente questi Termini.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>10. Legge Applicabile</h2>
+          <p>Questi Termini sono regolati dalle leggi italiane. Eventuali controversie saranno risolte dai tribunali italiani.</p>
+          <p>Per utenti internazionali: utilizzi l'App rispettando le leggi del tuo Paese.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>11. Contatti</h2>
+          <p>Per domande o segnalazioni:</p>
+          <ul>
+            <li><strong>Supporto:</strong> Attraverso la funzione di segnalazione in-app</li>
+            <li><strong>Email:</strong> support@dmto.me (se implementata)</li>
+            <li><strong>Anonimo:</strong> Non richiediamo informazioni personali</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>12. Disposizioni Finali</h2>
+          <ul>
+            <li><strong>Divisibilità:</strong> Se una clausola è invalida, le altre rimangono valide</li>
+            <li><strong>Rinuncia:</strong> Il mancato esercizio di un diritto non costituisce rinuncia</li>
+            <li><strong>Forza maggiore:</strong> Non siamo responsabili per eventi imprevisti</li>
+            <li><strong>Versione italiana:</strong> In caso di traduzioni, prevale la versione italiana</li>
+          </ul>
+        </section>
+
+        <div class="legal-footer">
+          <p><strong>Utilizzando dmto.me, dichiari di aver letto e accettato questi Termini e Condizioni.</strong></p>
+          <p>Data ultimo aggiornamento: <span id="footerDate"></span></p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Imposta date automaticamente
+    document.addEventListener('DOMContentLoaded', function() {
+      const now = new Date();
+      const dateString = now.toLocaleDateString('it-IT', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      document.getElementById('lastUpdated').textContent = dateString;
+      document.getElementById('footerDate').textContent = dateString;
+    });
+  </script>
+</body>
+</html>

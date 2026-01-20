@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profilo | dmto.me</title>
+  <meta name="description" content="Chat completamente anonime senza identità - libertà assoluta">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="dmto.me">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="glow glow--1"></div>
+  <div class="glow glow--2"></div>
+  <div class="glow glow--3"></div>
+
+  <main class="shell">
+    <nav class="top-nav">
+      <button class="btn-back" onclick="goBack()">←</button>
+      <div class="brand">
+        <span class="dot"></span>
+        <div class="brand__text">
+          <span class="word">dmto.me</span>
+          <small>profilo</small>
+        </div>
+      </div>
+      <div class="nav-spacer"></div>
+    </nav>
+
+    <section class="card profile-container">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileAvatar">👤</div>
+        <h1 class="profile-name" id="profileName">Tu</h1>
+        
+      </div>
+
+      <div class="profile-link-section">
+        <div class="profile-link">
+          <span class="link-label">Link profilo:</span>
+          <div class="link-display">
+            <span id="profileLink">Caricamento...</span>
+            <button class="btn-copy" onclick="copyProfileLink()" title="Copia link">📋</button>
+            <button class="btn-share" onclick="shareProfile()" title="Condividi">📤</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-card">
+          <span class="stat-number" id="statChats">0</span>
+          <div class="stat-label">Chat Attive</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statSent">0</span>
+          <div class="stat-label">Messaggi Inviati</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="statReceived">0</span>
+          <div class="stat-label">Messaggi Ricevuti</div>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn-secondary" onclick="editProfile()">
+          ✏️ Modifica Profilo
+        </button>
+
+        <button class="btn-secondary" onclick="privacySettings()">
+          🔒 Impostazioni Privacy
+        </button>
+        <button class="btn-secondary" onclick="logout()">
+          🚪 Logout
+        </button>
+      </div>
+
+      <div class="legal-links">
+        <a href="./privacy-policy.html">Privacy Policy</a> •
+        <a href="./terms-conditions.html">Termini e Condizioni</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="./profile.js"></script>
+  <script>
+    // Registrazione Service Worker per PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('Service Worker registrato con successo:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Registrazione Service Worker fallita:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

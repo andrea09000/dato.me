@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Anonime | dmto.me</title>
+  <meta name="description" content="Chat completamente anonime senza identità - libertà assoluta">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="dmto.me">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="glow glow--1"></div>
+  <div class="glow glow--2"></div>
+  <div class="glow glow--3"></div>
+
+  <main class="shell">
+    <div class="hero">
+      <span class="pill">dmto.me</span>
+      <h1>Chat Completamente Anonime,<br>nessuna identità rivelata.</h1>
+      
+
+    </div>
+
+    <nav class="top-nav">
+      <div class="brand">
+        <span class="dot"></span>
+        <div class="brand__text">
+          <span class="word">dmto.me</span>
+          
+        </div>
+      </div>
+      <div class="nav-actions">
+        
+        <button class="btn-profile" onclick="goToProfile()" id="profileButton">👤</button>
+      </div>
+    </nav>
+
+    <section class="card chat-container">
+      <header class="card__header">
+        <h2 class="chat-title">Chat Anonime</h2>
+        <button class="btn-refresh" onclick="refreshChats()">⟳</button>
+      </header>
+
+      <p class="eyebrow">Chat anarchiche - zero regole, libertà totale. 🔒 Auto-distruzione 24h • 🔐 Login persistente</p>
+
+      <div class="chat-list" id="chatList">
+        <!-- Le chat verranno caricate dinamicamente da Firebase -->
+      </div>
+
+      <div class="chat-actions">
+        <button class="cta" onclick="startNewChat()">Inizia nuova chat anonima</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="./chat.js"></script>
+  <script>
+    // Registrazione Service Worker per PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('Service Worker registrato con successo:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Registrazione Service Worker fallita:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

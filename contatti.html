@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti - dmto.me</title>
+    <meta name="description" content="Contatta il team di dmto.me - Supporto e assistenza per le chat anonime">
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="nav-dot"></span>
+                <span class="nav-text">dmto.me</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="help.html" class="nav-link">Help</a>
+                <a href="contatti.html" class="nav-link active">Contatti</a>
+            </div>
+            <button class="nav-cta">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- Contact Hero -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="contact-hero-content">
+                <div class="help-badge">
+                    <span>📞 Contattaci</span>
+                </div>
+                <h1 class="contact-title">
+                    Siamo Qui per<br>
+                    <span class="hero-accent">Aiutarti</span>
+                </h1>
+                <p class="contact-description">
+                    Hai domande, feedback o bisogno di supporto? Il nostro team è sempre pronto ad aiutarti.
+                    Scrivici e ti risponderemo il prima possibile.
+                </p>
+                
+            </div>
+        </div>
+        
+    </section>
+
+    <!-- Contact Info Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-info" style="max-width: 800px; margin: 0 auto;">
+                <div class="info-card primary">
+                    <div class="info-icon">📧</div>
+                    <h3>Email Supporto</h3>
+                    <p>support@dmto.me</p>
+                    <small>Risposta entro 24 ore</small>
+                    <button class="btn-primary small" onclick="copyToClipboard('support@dmto.me')">Copia Email</button>
+                </div>
+
+                <div class="info-card help">
+                    <div class="info-icon">📚</div>
+                    <h3>Centro Assistenza</h3>
+                    <p>Trova risposte immediate nel nostro help center</p>
+                    <a href="help.html" class="btn-primary small" style="display: inline-block; margin-top: 8px; text-decoration: none;">Help Center</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="nav-dot"></span>
+                    <span class="nav-text">dmto.me</span>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Supporto</h4>
+                        <a href="help.html">Help Center</a>
+                        <a href="contatti.html">Contatti</a>
+                        <a href="#faq">FAQ</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Prodotto</h4>
+                        <a href="index.html">Features</a>
+                        <a href="index.html#privacy">Privacy</a>
+                        <a href="index.html#about">About</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <a href="../app/privacy-policy.html">Privacy Policy</a>
+                        <a href="../app/terms-conditions.html">Termini</a>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright © 2026 dmto.me - Progetto di Andrea Savoldelli & Davide Cirelli<br>Made with ❤️ in Italy</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Copy to clipboard function
+            window.copyToClipboard = function(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Email copiato negli appunti!', 'success');
+                }).catch(() => {
+                    showNotification('Errore nella copia', 'error');
+                });
+            };
+
+            // Notification system
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification notification-${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <span class="notification-icon">
+                            ${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}
+                        </span>
+                        <span class="notification-text">${message}</span>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => notification.classList.add('show'), 10);
+
+                // Auto remove
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 4000);
+            }
+        });
+    </script>
+
+    <style>
+        /* Additional styles for contact page */
+        .contact-section {
+            padding: 80px 0;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-large);
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .info-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .info-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .info-card h3 {
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .info-card small {
+            color: var(--text-muted);
+            font-size: 13px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .info-card .btn-primary,
+        .info-card .btn-secondary {
+            margin-top: 16px;
+            display: inline-block;
+            text-decoration: none;
+            width: auto;
+        }
+
+        .phone-number {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .phone-number .number {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            z-index: 10000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification-icon {
+            font-size: 20px;
+        }
+
+        .notification-text {
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .info-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</body>
+</html>

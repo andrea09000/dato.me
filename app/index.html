@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accesso | dmto.me </title>
+  <meta name="description" content="Chat completamente anonime senza identità - libertà assoluta">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="dmto.me">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="glow glow--1"></div>
+  <div class="glow glow--2"></div>
+  <div class="glow glow--3"></div>
+
+  <!-- Loading Screen -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-logo">
+        <span class="loading-dot"></span>
+        <span class="loading-text">dmto.me</span>
+      </div>
+      <div class="loading-bar">
+        <div class="loading-progress" id="loadingProgress"></div>
+      </div>
+      <div class="loading-text">
+        <span id="loadingMessage">Caricamento...</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="shell">
+    <div class="hero">
+      <span class="pill">dmto.me</span>
+      <h1>Chat 100% Anonime,<br>libertà assoluta.</h1>
+      
+
+    </div>
+
+    <section class="card">
+      <header class="card__header">
+        <div class="brand">
+          <span class="dot"></span>
+          <div class="brand__text">
+            <span class="word">dmto.me</span>
+            <small>identity hub</small>
+          </div>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Autenticazione">
+          <button class="tab is-active" data-target="login" role="tab" aria-selected="true">Login</button>
+          <button class="tab" data-target="register" role="tab" aria-selected="false">Registrati</button>
+        </div>
+      </header>
+
+     
+
+      <div class="panels">
+        <form class="panel is-active" id="login" aria-label="Form di login" novalidate>
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required placeholder="tu@email.com">
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input type="password" name="password" autocomplete="current-password" required placeholder="••••••••">
+          </label>
+          <div class="actions">
+            
+            <button type="submit" class="cta">Entra</button>
+          </div>
+        </form>
+
+        <div class="legal-links">
+          <a href="./privacy-policy.html">Privacy Policy</a> •
+          <a href="./terms-conditions.html">Termini e Condizioni</a>
+        </div>
+
+        <form class="panel" id="register" aria-label="Form di registrazione" novalidate>
+          <label class="field">
+            <span>Nome utente</span>
+            <input type="text" name="username" id="registerUsername" autocomplete="username" required placeholder="Username" minlength="3" maxlength="30" pattern="[a-zA-Z0-9_]+" title="Solo lettere, numeri e underscore (3-30 caratteri)">
+            <small class="field-hint" id="usernameHint" style="display: none;"></small>
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required placeholder="tu@email.com">
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input type="password" name="password" id="registerPassword" autocomplete="new-password" required placeholder="Crea una password (min. 6 caratteri)" minlength="6">
+            <small class="field-hint">Minimo 6 caratteri</small>
+          </label>
+
+          <div class="terms-acceptance">
+            <label class="checkbox-field">
+              <input type="checkbox" id="acceptTerms" name="acceptTerms" required>
+              <span>Accetto i <a href="./terms-conditions.html" target="_blank">Termini e Condizioni</a> e la <a href="./privacy-policy.html" target="_blank">Privacy Policy</a></span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <span class="hint">Solo i campi essenziali. Ready?</span>
+            <button type="submit" class="cta" id="registerBtn" disabled>Crea account</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+  <script>
+    // Registrazione Service Worker per PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('Service Worker registrato con successo:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Registrazione Service Worker fallita:', error);
+          });
+      });
+    }
+
+    // Gestione installazione PWA
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Previene il mini-infobar di installazione automatica
+      e.preventDefault();
+      // Salva l'evento per poterlo triggerare più tardi
+      deferredPrompt = e;
+      // Mostra un pulsante di installazione personalizzato se vuoi
+      console.log('PWA pronta per l\'installazione');
+    });
+
+    // Quando l'app è già installata
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('PWA installata con successo');
+    });
+  </script>
+</body>
+</html>

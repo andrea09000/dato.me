@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | dmto.me</title>
+  <meta name="description" content="Informativa sulla privacy di dmto.me - Chat completamente anonime">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="glow glow--1"></div>
+  <div class="glow glow--2"></div>
+  <div class="glow glow--3"></div>
+
+  <main class="shell">
+    <nav class="top-nav">
+      <button class="btn-back" onclick="window.location.href='./index.html'">←</button>
+      <div class="brand">
+        <span class="dot"></span>
+        <div class="brand__text">
+          <span class="word">dmto.me</span>
+          <small>privacy policy</small>
+        </div>
+      </div>
+      <div class="nav-spacer"></div>
+    </nav>
+
+    <section class="card legal-content">
+      <div class="legal-header">
+        <h1>Informativa sulla Privacy</h1>
+        <p class="legal-meta">Ultimo aggiornamento: <span id="lastUpdated"></span></p>
+      </div>
+
+      <div class="legal-body">
+
+        <section class="legal-section">
+          <h2>1. Introduzione</h2>
+          <p>Benvenuto in dmto.me ("noi", "nostro" o "l'App"). Questa Informativa sulla Privacy spiega come raccogliamo, utilizziamo, divulghiamo e proteggiamo le informazioni quando utilizzi la nostra applicazione di chat anonima.</p>
+          <p><strong>Importante:</strong> dmto.me è progettata per offrire anonimato completo. Non raccogliamo, memorizziamo o tracciamo informazioni personali identificabili.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>2. Anonimato e Non-Raccolta Dati</h2>
+          <p>dmto.me è basata su un principio fondamentale: <strong>l'anonimato completo</strong>.</p>
+          <ul>
+            <li><strong>Nessuna registrazione obbligatoria:</strong> Puoi utilizzare l'App senza creare un account</li>
+            <li><strong>Nessun dato personale:</strong> Non chiediamo nome, email, telefono o qualsiasi informazione identificabile</li>
+            <li><strong>Nessun tracciamento:</strong> Non utilizziamo cookie, pixel di tracciamento o analytics</li>
+            <li><strong>Nessuna pubblicità:</strong> Non vendiamo spazi pubblicitari né dati a terze parti</li>
+            <li><strong>Nomi casuali:</strong> Tutti i nomi utente sono generati casualmente dal sistema</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>3. Auto-Distruzione dei Dati</h2>
+          <p>Per garantire la massima privacy, tutte le conversazioni hanno una durata limitata:</p>
+          <ul>
+            <li><strong>Scadenza automatica:</strong> Ogni conversazione si elimina automaticamente dopo 24 ore</li>
+            <li><strong>Pulizia programmata:</strong> Il sistema elimina permanentemente i dati scaduti</li>
+            <li><strong>Nessuna archiviazione:</strong> Non conserviamo conversazioni oltre il periodo di scadenza</li>
+            <li><strong>Impossibilità recupero:</strong> Una volta eliminati, i messaggi non possono essere recuperati</li>
+          </ul>
+          <p><strong>Nota:</strong> Anche se ti registri, le conversazioni seguono le stesse regole di auto-distruzione.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>4. Dati Tecnici Minimi</h2>
+          <p>Per il funzionamento tecnico dell'App, potremmo temporaneamente elaborare:</p>
+          <ul>
+            <li><strong>Indirizzo IP:</strong> Solo per connessione al server, non memorizzato</li>
+            <li><strong>User Agent:</strong> Informazioni del browser per compatibilità</li>
+            <li><strong>Timestamp:</strong> Solo per calcolare la scadenza delle conversazioni</li>
+            <li><strong>Firebase Auth:</strong> Se ti registri, solo email e password (crittografate)</li>
+          </ul>
+          <p><strong>Tutti i dati tecnici vengono eliminati insieme alle conversazioni.</strong></p>
+        </section>
+
+        <section class="legal-section">
+          <h2>5. Sicurezza dei Dati</h2>
+          <p>Implementiamo misure di sicurezza appropriate:</p>
+          <ul>
+            <li><strong>Crittografia end-to-end:</strong> Firebase Firestore crittografa i dati</li>
+            <li><strong>Accesso limitato:</strong> Solo gli utenti autorizzati possono accedere ai propri dati</li>
+            <li><strong>Regole di sicurezza:</strong> Firestore rules impediscono accessi non autorizzati</li>
+            <li><strong>Auto-distruzione:</strong> Eliminazione automatica previene fughe di dati</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>6. Condivisione dei Dati</h2>
+          <p><strong>Non condividiamo mai i tuoi dati con terze parti.</strong></p>
+          <ul>
+            <li><strong>Nessuna vendita:</strong> I tuoi dati non vengono venduti</li>
+            <li><strong>Nessuna pubblicità:</strong> Non collaboriamo con inserzionisti</li>
+            <li><strong>Nessuna analisi:</strong> Non utilizziamo servizi di analytics</li>
+            <li><strong>Solo fornitori tecnici:</strong> Utilizziamo esclusivamente Firebase (Google)</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>7. I Tuoi Diritti</h2>
+          <p>In quanto utente anonimo, hai i seguenti diritti:</p>
+          <ul>
+            <li><strong>Diritto all'oblio:</strong> I tuoi dati si auto-eliminano dopo 24 ore</li>
+            <li><strong>Diritto alla portabilità:</strong> Puoi esportare le tue conversazioni attive</li>
+            <li><strong>Diritto alla cancellazione:</strong> Puoi eliminare il tuo account in qualsiasi momento</li>
+            <li><strong>Diritto all'anonimato:</strong> Puoi utilizzare l'App senza rivelare la tua identità</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>8. Cookie e Tracking</h2>
+          <p><strong>Non utilizziamo cookie né sistemi di tracciamento.</strong></p>
+          <p>L'App funziona senza memorizzare preferenze o dati di navigazione sul tuo dispositivo.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>9. Modifiche alla Privacy Policy</h2>
+          <p>Ci riserviamo il diritto di modificare questa Privacy Policy in qualsiasi momento. Le modifiche saranno notificate attraverso l'App o pubblicati su questa pagina.</p>
+          <p>Le modifiche non influenzeranno retroattivamente la privacy dei dati già raccolti.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>10. Contatti</h2>
+          <p>Per domande sulla privacy o richieste relative ai tuoi dati:</p>
+          <ul>
+            <li><strong>Email:</strong> privacy@dmto.me (se implementata)</li>
+            <li><strong>Attraverso l'App:</strong> Usa la funzione di segnalazione per contenuti inappropriati</li>
+          </ul>
+          <p>Data ultimo aggiornamento: <span id="footerDate"></span></p>
+        </section>
+
+        <div class="legal-footer">
+          <p><strong>Utilizzando dmto.me, accetti questa Privacy Policy.</strong></p>
+          <p>Se non sei d'accordo con questi termini, ti preghiamo di non utilizzare l'App.</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Imposta date automaticamente
+    document.addEventListener('DOMContentLoaded', function() {
+      const now = new Date();
+      const dateString = now.toLocaleDateString('it-IT', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      document.getElementById('lastUpdated').textContent = dateString;
+      document.getElementById('footerDate').textContent = dateString;
+    });
+  </script>
+</body>
+</html>
