@@ -10,7 +10,7 @@
     },
     {
       "source": "/:username([a-zA-Z0-9_-]+)",
-      "destination": "/app/user.html?u=:username"
+      "destination": "/app/temp-chat.html?user=:username"
     },
     {
       "source": "/",
