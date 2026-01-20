@@ -39,6 +39,9 @@ async function loadCurrentProfile() {
     form.allowNewChats.checked = profile.allowNewChats !== false;
     form.notifications.checked = profile.notifications !== false;
 
+    // Aggiorna preview link username
+    updateUsernamePreview(profile.username || '');
+
     // Carica foto profilo se presente
     if (profile.photoURL) {
       currentPhotoData = profile.photoURL;
@@ -159,6 +162,26 @@ document.getElementById('editForm').addEventListener('submit', async function(e)
   } catch (error) {
     console.error('Errore salvataggio profilo:', error);
     showToast('Errore nell\'aggiornamento del profilo');
+  }
+});
+
+// Aggiorna preview link username
+function updateUsernamePreview(username) {
+  const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
+  const previewElement = document.getElementById('usernamePreview');
+  if (previewElement) {
+    const displayUrl = baseUrl.replace('https://', '');
+    previewElement.textContent = username ? `${displayUrl}/${username}` : `${displayUrl}/tuo-username`;
+  }
+}
+
+// Aggiorna preview quando cambia username
+document.addEventListener('DOMContentLoaded', function() {
+  const usernameInput = document.getElementById('editForm')?.username;
+  if (usernameInput) {
+    usernameInput.addEventListener('input', function(e) {
+      updateUsernamePreview(e.target.value.trim());
+    });
   }
 });
 

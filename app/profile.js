@@ -2,6 +2,8 @@
 
 let currentUser = null;
 
+// Assicurati che config.js sia caricato prima di questo file
+
 document.addEventListener('DOMContentLoaded', function() {
   // Verifica autenticazione
   auth.onAuthStateChanged(async (user) => {
@@ -50,8 +52,11 @@ async function loadProfileData() {
       // Genera username temporaneo univoco (mai visto nell'UI, ma usato nel link)
       username = 'user_' + currentUser.uid.substring(0, 8);
     }
-    const profileLink = `dmto.me/${username}`;
-    document.getElementById('profileLink').textContent = profileLink;
+    
+    // Usa il dominio dal config, fallback a hardcoded
+    const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
+    const profileLink = `${baseUrl}/${username}`;
+    document.getElementById('profileLink').textContent = profileLink.replace('https://', '');
 
     // Carica statistiche
     await loadUserStats();
@@ -115,11 +120,11 @@ function editProfile() {
 
 function copyProfileLink() {
   const profileLink = document.getElementById('profileLink').textContent;
-  const username = profileLink.split('/')[1];
+  const username = profileLink.split('/').pop(); // Prende l'ultima parte dopo /
   
-  // Crea link nel formato dmto.me/username
-  // Se configurato con rewrite, usa user.html?u=username come fallback
-  const fullUrl = `https://dmto.me/${username}`;
+  // Usa il dominio dal config
+  const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
+  const fullUrl = `${baseUrl}/${username}`;
 
   // Usa l'API Clipboard moderna se disponibile, altrimenti fallback
   if (navigator.clipboard && window.isSecureContext) {
@@ -135,8 +140,11 @@ function copyProfileLink() {
 
 function shareProfile() {
   const profileLink = document.getElementById('profileLink').textContent;
-  const username = profileLink.split('/')[1];
-  const fullUrl = `https://dmto.me/${username}`;
+  const username = profileLink.split('/').pop(); // Prende l'ultima parte dopo /
+  
+  // Usa il dominio dal config
+  const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
+  const fullUrl = `${baseUrl}/${username}`;
   const profile = getStoredProfile();
   const profileName = profile.displayName || 'Anonimo';
 

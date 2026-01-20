@@ -29,6 +29,11 @@ body {
     var(--bg);
   color: var(--text);
   overflow-x: hidden;
+  /* Previene zoom su iOS quando si tocca un input */
+  touch-action: manipulation;
+  /* Migliora il rendering su mobile */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .bg-grid {
@@ -1028,15 +1033,7 @@ body {
   border-top: 1px solid var(--stroke);
 }
 
-@media (max-width: 640px) {
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .form-actions button {
-    width: 100%;
-  }
-}
+/* Questa media query è stata integrata sopra */
 
 /* Utility classes */
 .btn-back {
@@ -1428,7 +1425,284 @@ body {
   opacity: 0.8;
 }
 
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE OPTIMIZATION
+   ============================================ */
+
 @media (max-width: 768px) {
+  /* Shell e layout generale */
+  .shell {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  /* Hero section */
+  .hero {
+    padding: 16px 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(24px, 6vw, 32px);
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  /* Card responsive */
+  .card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  /* Navigation top */
+  .top-nav {
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .brand__text small {
+    font-size: 10px;
+  }
+
+  .nav-actions {
+    gap: 8px;
+  }
+
+  .btn-profile {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  /* Tabs responsive */
+  .tabs {
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .tab {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* Form fields */
+  .field input,
+  .field textarea,
+  .field select {
+    padding: 14px 16px;
+    font-size: 16px; /* Previene zoom su iOS quando >= 16px */
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 12px;
+  }
+
+  /* Touch targets minimi 44x44px per accessibilità */
+  button,
+  .btn-back,
+  .btn-profile,
+  .btn-refresh,
+  .btn-copy,
+  .btn-share,
+  .tab {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Assicura che tutto sia visibile */
+  .card__header {
+    flex-wrap: wrap;
+  }
+
+  .tabs {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Previeni overflow orizzontale */
+  .chat-name,
+  .partner-name,
+  .profile-name {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Link profilo responsive */
+  .link-display {
+    flex-wrap: wrap;
+  }
+
+  #profileLink {
+    width: 100%;
+    text-align: left;
+  }
+
+  /* Buttons */
+  .cta {
+    padding: 16px 20px;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .btn-secondary {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  /* Chat list */
+  .chat-list {
+    gap: 10px;
+  }
+
+  .chat-item {
+    padding: 14px;
+  }
+
+  .chat-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .chat-name {
+    font-size: 15px;
+  }
+
+  .chat-preview {
+    font-size: 13px;
+  }
+
+  /* Message container */
+  .message-container {
+    height: calc(100vh - 140px) !important;
+  }
+
+  .message-header {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .message-partner {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .partner-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .partner-name {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .partner-status {
+    font-size: 12px;
+  }
+
+  .expires-notice {
+    font-size: 10px;
+  }
+
+  /* Message area */
+  .message-area {
+    padding: 12px;
+    border-radius: 12px;
+    min-height: 200px;
+    max-height: calc(100vh - 280px);
+  }
+
+  .message-content {
+    max-width: 85%;
+    padding: 10px 14px;
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .message-time {
+    font-size: 10px;
+  }
+
+  /* Message input */
+  .message-input-area {
+    gap: 10px;
+  }
+
+  .message-input {
+    padding: 12px 16px;
+    font-size: 16px; /* Previene zoom su iOS */
+    min-height: 48px;
+  }
+
+  .btn-send {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  /* Profile */
+  .profile-header {
+    margin-bottom: 24px;
+  }
+
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .profile-name {
+    font-size: 22px;
+  }
+
+  .profile-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .profile-link-section {
+    padding: 14px;
+  }
+
+  .link-display {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+
+  #profileLink {
+    font-size: 13px;
+    word-break: break-all;
+  }
+
+  /* Edit profile */
+  .profile-photo {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+
+  /* Legal pages */
   .legal-content {
     padding: 16px;
   }
@@ -1443,6 +1717,169 @@ body {
 
   .legal-section p {
     font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .shell {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 8vw, 28px);
+    line-height: 1.2;
+  }
+
+  /* Navigation più compatta */
+  .top-nav {
+    padding: 10px 12px;
+  }
+
+  .brand {
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Chat items più compatti */
+  .chat-item {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .chat-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .chat-info {
+    min-width: 0;
+  }
+
+  .chat-preview {
+    font-size: 12px;
+  }
+
+  /* Card header responsive */
+  .card__header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .chat-title {
+    font-size: 18px;
+  }
+
+  /* Message header più compatto */
+  .message-header {
+    padding: 10px 12px;
+  }
+
+  .partner-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .partner-name {
+    font-size: 15px;
+  }
+
+  .message-area {
+    padding: 10px;
+    max-height: calc(100vh - 300px);
+  }
+
+  /* Message bubbles più grandi per touch */
+  .message-content {
+    max-width: 90%;
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+
+  /* Profile più compatto */
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  .profile-name {
+    font-size: 20px;
+  }
+
+  /* Form actions stack */
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  /* Buttons full width su mobile */
+  .cta,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  /* Eyebrow text più piccolo */
+  .eyebrow {
+    font-size: 12px;
+  }
+
+  /* Hint text */
+  .hint {
+    font-size: 13px;
+  }
+
+  .field-hint {
+    font-size: 11px;
+  }
+
+  /* Profile link display responsive */
+  .link-display {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  #profileLink {
+    word-break: break-all;
+  }
+
+  .btn-copy,
+  .btn-share {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Tabs più compatti */
+  .tab {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  /* Legal links più piccoli */
+  .legal-links {
+    font-size: 12px;
+  }
+
+  .legal-links a {
+    margin: 0 4px;
   }
 }
 

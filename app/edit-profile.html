@@ -17,6 +17,9 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
   <link rel="stylesheet" href="./style.css">
 
+  <!-- Config -->
+  <script src="./config.js"></script>
+  
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -63,7 +66,7 @@
           <label class="field">
             <span>Username</span>
             <input type="text" name="username" placeholder="Il tuo username univoco" maxlength="30" pattern="[a-zA-Z0-9_]+" title="Solo lettere, numeri e underscore">
-            <small class="field-hint">Questo sarà il tuo link profilo: dmto.me/tuo-username</small>
+            <small class="field-hint">Questo sarà il tuo link profilo: <span id="usernamePreview">dmtome.vercel.app/tuo-username</span></small>
           </label>
 
           <label class="field">
