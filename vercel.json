@@ -1,16 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/app/(.*)",
-      "destination": "/app/$1"
+      "source": "/app/:path*",
+      "destination": "/app/:path*"
     },
     {
-      "source": "/sito/(.*)",
-      "destination": "/sito/$1"
+      "source": "/sito/:path*",
+      "destination": "/sito/:path*"
     },
     {
-      "source": "/([a-zA-Z0-9_]+)",
-      "destination": "/app/user.html?u=$1"
+      "source": "/:username([a-zA-Z0-9_-]+)",
+      "destination": "/app/user.html?u=:username"
     },
     {
       "source": "/",

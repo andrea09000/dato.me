@@ -2,9 +2,29 @@
 
 let currentUser = null;
 
-// Assicurati che config.js sia caricato prima di questo file
+// Funzione per assicurarsi che config.js sia caricato
+function ensureConfigLoaded() {
+  return new Promise((resolve) => {
+    if (window.APP_CONFIG) {
+      resolve();
+    } else {
+      // Attendi che config.js si carichi (max 2 secondi)
+      let attempts = 0;
+      const checkConfig = setInterval(() => {
+        attempts++;
+        if (window.APP_CONFIG || attempts > 20) {
+          clearInterval(checkConfig);
+          resolve();
+        }
+      }, 100);
+    }
+  });
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+  // Assicurati che config.js sia caricato
+  await ensureConfigLoaded();
+  
   // Verifica autenticazione
   auth.onAuthStateChanged(async (user) => {
     if (!user) {
@@ -19,10 +39,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadProfileData() {
   try {
+    // Assicurati che config.js sia caricato
+    if (!window.APP_CONFIG) {
+      console.warn('APP_CONFIG non disponibile, attendo...');
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
     const userDoc = await db.collection('users').doc(currentUser.uid).get();
 
     if (!userDoc.exists) {
       showToast('Profilo non trovato');
+      // Mostra un link di default anche se il profilo non esiste
+      const profileLinkElement = document.getElementById('profileLink');
+      if (profileLinkElement) {
+        const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
+        const fallbackUsername = 'user_' + currentUser.uid.substring(0, 8);
+        profileLinkElement.textContent = `${baseUrl.replace('https://', '')}/${fallbackUsername}`;
+      }
       return;
     }
 
@@ -38,12 +71,10 @@ async function loadProfileData() {
 
     // Aggiorna nome
     const displayName = profile.displayName || profile.username || 'Anonimo';
-    document.getElementById('profileName').textContent = displayName;
-
-    // Aggiorna status
-    const statusText = profile.status || 'Disponibile per chat anonime';
-    const onlineText = profile.isOnline ? 'Online' : 'Offline';
-    document.getElementById('profileStatus').textContent = `${statusText} • ${onlineText}`;
+    const profileNameElement = document.getElementById('profileName');
+    if (profileNameElement) {
+      profileNameElement.textContent = displayName;
+    }
 
     // Aggiorna link profilo - username è sempre univoco
     // Se per qualche motivo non c'è username, crea uno temporaneo basato su uid
@@ -56,7 +87,10 @@ async function loadProfileData() {
     // Usa il dominio dal config, fallback a hardcoded
     const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
     const profileLink = `${baseUrl}/${username}`;
-    document.getElementById('profileLink').textContent = profileLink.replace('https://', '');
+    const profileLinkElement = document.getElementById('profileLink');
+    if (profileLinkElement) {
+      profileLinkElement.textContent = profileLink.replace('https://', '');
+    }
 
     // Carica statistiche
     await loadUserStats();
@@ -64,6 +98,14 @@ async function loadProfileData() {
   } catch (error) {
     console.error('Errore caricamento profilo:', error);
     showToast('Errore nel caricamento del profilo');
+    
+    // Anche in caso di errore, mostra almeno un link di fallback
+    const profileLinkElement = document.getElementById('profileLink');
+    if (profileLinkElement && profileLinkElement.textContent === 'Caricamento...') {
+      const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
+      const fallbackUsername = currentUser ? 'user_' + currentUser.uid.substring(0, 8) : 'username';
+      profileLinkElement.textContent = `${baseUrl.replace('https://', '')}/${fallbackUsername}`;
+    }
   }
 }
 
@@ -139,14 +181,19 @@ function copyProfileLink() {
 }
 
 function shareProfile() {
-  const profileLink = document.getElementById('profileLink').textContent;
+  const profileLinkElement = document.getElementById('profileLink');
+  if (!profileLinkElement) return;
+  
+  const profileLink = profileLinkElement.textContent;
   const username = profileLink.split('/').pop(); // Prende l'ultima parte dopo /
   
   // Usa il dominio dal config
   const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.BASE_URL) || 'https://dmtome.vercel.app';
   const fullUrl = `${baseUrl}/${username}`;
-  const profile = getStoredProfile();
-  const profileName = profile.displayName || 'Anonimo';
+  
+  // Prendi il nome dal DOM invece di una funzione inesistente
+  const profileNameElement = document.getElementById('profileName');
+  const profileName = (profileNameElement && profileNameElement.textContent) || 'Anonimo';
 
   // Usa Web Share API se disponibile (mobile)
   if (navigator.share) {
